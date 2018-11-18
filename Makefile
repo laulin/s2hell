@@ -1,4 +1,4 @@
-compile:
+compile: setup
 	gcc -Wall -Dx86 sources/s2hell.c sources/s2hell_tokenizer.c sources/s2hell_std.c sources/s2hell_commands.c sources/main.x86.c sources/s2hell_command_list.x86.c -o output/s2hell
 
 test: build_so
@@ -7,8 +7,9 @@ test: build_so
 	python3 -m unittest tests/test_std.py
 	python3 -m unittest tests/test_commands.py
 
-build_so:
+build_so: setup
 	gcc -Wall -Dx86 -shared -o output/s2hell.so -fPIC sources/s2hell.c sources/s2hell_tokenizer.c sources/s2hell_std.c sources/s2hell_commands.c sources/s2hell_command_list.x86.c
+
 build_arduino:
 	# need apt install gcc-avr binutils-avr avr-libc avrdude
 	avr-gcc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o output/main.arduino.o sources/main.arduino.c
@@ -23,3 +24,6 @@ build_arduino:
 
 upload:
 	sudo avrdude -F -V -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U flash:w:output/s2hell.arduino.hex
+
+setup:
+	mkdir -p output/
