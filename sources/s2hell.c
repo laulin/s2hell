@@ -90,7 +90,7 @@ s2hell_code s2hell_execute(const char* line, s2hell_token* tokens, uint8_t token
             // this cas should not happen (filtered by the tokenizer)
             case bad_token :
             case not_defined :
-                return -1;
+                return S2HELL_EXITCODE_INTERNAL_ERROR;
 
             case command :
                 current_command_function = s2hell_get_function_pointer(&line[token->position], token->length);
@@ -98,7 +98,7 @@ s2hell_code s2hell_execute(const char* line, s2hell_token* tokens, uint8_t token
                 if(current_command_function == NULL)
                 {
                     // to be improved
-                    return -1;
+                    return S2HELL_EXITCODE_CANNOT_EXECUTE;
                 }
                 break;
 
@@ -111,9 +111,9 @@ s2hell_code s2hell_execute(const char* line, s2hell_token* tokens, uint8_t token
 
             case pipe :
                 code = current_command_function(argc, argv);
-                if (code) // command fail
+                if (code != S2HELL_EXITCODE_SUCCESS) // command fail
                 {
-                    return -1;
+                    return code;
                 }
                 argc = 0;
                 current_command_function = NULL;
@@ -124,7 +124,7 @@ s2hell_code s2hell_execute(const char* line, s2hell_token* tokens, uint8_t token
 
             default:
                  // should never happen if the dev' rocks
-                return -1;
+                return S2HELL_EXITCODE_INTERNAL_ERROR;
         }
         token_i++;
     }

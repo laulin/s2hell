@@ -10,7 +10,7 @@ s2hell_code default_lscmd(uint8_t argc, s2hell_argument* argv)
         s2hell_stdout_write(s2hell_get_command_name(i));
         s2hell_stdout_write("\n");
     }
-    return 0;
+    return S2HELL_EXITCODE_SUCCESS;
 }
 
 s2hell_code default_man(uint8_t argc, s2hell_argument* argv)
@@ -18,7 +18,7 @@ s2hell_code default_man(uint8_t argc, s2hell_argument* argv)
     if (argc != 1)
     {
         s2hell_stdout_write("need a command as argument\n");
-        return 1;
+        return S2HELL_EXITCODE_BAD_NUMBER_OF_ARGS;
     }
 
     uint8_t number_of_available_commands = s2hell_get_command_list_size();
@@ -29,13 +29,13 @@ s2hell_code default_man(uint8_t argc, s2hell_argument* argv)
             if(memcmp(argv->arg, s2hell_get_command_name(i), argv->len) == 0)
             {
                 s2hell_stdout_write(s2hell_get_command_man(i));
-                return 0;
+                return S2HELL_EXITCODE_SUCCESS;
             }
         }
     }
 
     s2hell_stdout_write("Not man found for this command\n");
-    return 0;
+    return S2HELL_EXITCODE_SUCCESS;
 }
 
 s2hell_code default_search(uint8_t argc, s2hell_argument* argv)
@@ -43,7 +43,7 @@ s2hell_code default_search(uint8_t argc, s2hell_argument* argv)
     if (argc != 1)
     {
         s2hell_stdout_write("need one arg\n");
-        return 1;
+        return S2HELL_EXITCODE_BAD_NUMBER_OF_ARGS;
     }
 
     const char * stdin_buffer = s2hell_get_complet_stdin_buffer();
@@ -82,7 +82,7 @@ s2hell_code default_search(uint8_t argc, s2hell_argument* argv)
             compare_index = 0;
         }
     }
-    return 0;
+    return S2HELL_EXITCODE_SUCCESS;
 }
 
 s2hell_code default_echo(uint8_t argc, s2hell_argument* argv)
@@ -90,11 +90,11 @@ s2hell_code default_echo(uint8_t argc, s2hell_argument* argv)
     if (argc != 1)
     {
         s2hell_stdout_write("need one arg\n");
-        return 1;
+        return S2HELL_EXITCODE_BAD_NUMBER_OF_ARGS;
     }
 
     s2hell_stdout_nwrite(argv->arg, argv->len);
     s2hell_stdout_write("\n");
 
-    return 0;
+    return S2HELL_EXITCODE_SUCCESS;
 }

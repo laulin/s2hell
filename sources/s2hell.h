@@ -8,6 +8,12 @@
 
 // interesting point : https://www.tldp.org/LDP/abs/html/exitcodes.html#EXITCODESREF
 
+#define S2HELL_EXITCODE_SUCCESS             0
+#define S2HELL_EXITCODE_BAD_NUMBER_OF_ARGS  1
+#define S2HELL_EXITCODE_BAD_ARG             2
+#define S2HELL_EXITCODE_CANNOT_EXECUTE      126
+#define S2HELL_EXITCODE_INTERNAL_ERROR      255
+
 
 // === Configuration ===
 // Please take care of that or you may be out-of-memory !
@@ -25,7 +31,7 @@ s2hell_argument;
 
 typedef struct _std  s2hell_std; // prevent missing definition, done in s2hell_std.h
 
-typedef int8_t s2hell_code;
+typedef uint8_t s2hell_code;
 // stdin, stdout, argc, argv -> int
 typedef s2hell_code (*s2hell_command_function)(uint8_t, s2hell_argument*);
 
