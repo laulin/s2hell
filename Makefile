@@ -27,3 +27,9 @@ upload:
 
 setup:
 	mkdir -p output/
+
+test_uart:
+	avr-gcc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o output/uart.arduino.o sources/uart.arduino.c
+	avr-gcc -mmcu=atmega328p output/uart.arduino.o -o output/uart.arduino.bin 
+	avr-objcopy -O ihex -R .eeprom output/uart.arduino.bin output/uart.arduino.hex
+	sudo avrdude -F -V -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U flash:w:output/uart.arduino.hex
