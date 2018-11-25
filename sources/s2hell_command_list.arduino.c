@@ -6,6 +6,27 @@
 
 #define Not_man "not availble\n"
 
+/* 
+
+display state of direction
+
+example : 
+
+D0:0
+D1:0
+D2:0
+D3:0
+D4:0
+D5:0
+D6:0
+D7:0
+D8:0
+D9:0
+D10:0
+D11:0
+D12:0
+D13:0
+*/
 s2hell_code default_getdp(uint8_t argc, s2hell_argument* argv)
 {
     char tmp[15] = {0};
