@@ -74,6 +74,8 @@ s2hell_code s2hell_execute(const char* line, s2hell_token* tokens, uint8_t token
     s2hell_code code = 0;
     s2hell_command_function current_command_function = NULL;
 
+    s2hell_reset_stds();
+
     while(token_i < token_size)
     {
         s2hell_token* token = &tokens[token_i];
