@@ -17,6 +17,7 @@ static uint8_t g_state = CHARACTER;
 void (*g_print_buffer)(const uint8_t* buffer, uint8_t size) = NULL;
 void (*g_print_char)(uint8_t c) = NULL;
 void (*g_on_new_line)(const uint8_t * buffer, uint8_t size) = NULL;
+void (*g_on_tab)(const uint8_t * buffer, uint8_t size) = NULL;
 
 
 void s2hell_clear_line()
@@ -149,6 +150,14 @@ void call_on_new_line(const char * buffer, uint8_t size)
     }
 }
 
+void call_on_tab(const char * buffer, uint8_t size)
+{
+    if(g_on_tab != NULL)
+    {
+        g_on_tab((const uint8_t*)buffer, size);
+    }
+}
+
 void on_character(uint8_t x)
 {
     if(x < 32)
@@ -163,10 +172,11 @@ void on_character(uint8_t x)
                     call_print_buffer("\x1b[K", 3);
                     break;
                 }
-            /*case 9: // tab
+            case 9: // tab
                 {
+                    call_on_tab((const char *)g_buffer, g_buffer_size);
                     break;
-                }*/
+                }
             case 13: // return
                 {
                     // rewrite the complet line
@@ -292,4 +302,9 @@ void set_print_char(void (*print_char)(uint8_t c))
 void set_on_new_line(void (*on_new_line)(const uint8_t * buffer, uint8_t size))
 {
     g_on_new_line = on_new_line;
+}
+
+void set_on_tab(void (*on_tab)(const uint8_t * buffer, uint8_t size))
+{
+    g_on_tab = on_tab;
 }
