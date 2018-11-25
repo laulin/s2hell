@@ -1,3 +1,5 @@
+all: compile build_so build_arduino_a
+
 compile: setup
 	gcc -Wall -std=c11 -Dx86 sources/s2hell.c sources/s2hell_tokenizer.c sources/s2hell_terminal.c sources/s2hell_std.c sources/s2hell_commands.c sources/main.x86.c sources/s2hell_command_list.x86.c -o output/x86/s2hell
 
@@ -40,8 +42,8 @@ clean:
 	rm output/arduino/*
 	rm output/x86/*
 
-test_uart: build_arduino_a
-	avr-gcc -Os -std=c11 -DF_CPU=16000000UL -mmcu=atmega328p -c -o output/arduino/uart.o sources/uart.arduino.c
+example_uart: build_arduino_a
+	avr-gcc -Os -std=c11 -DF_CPU=16000000UL -mmcu=atmega328p -I"$(shell pwd)/sources" -c -o output/arduino/uart.o examples/uart.arduino.c
 	avr-gcc -mmcu=atmega328p -L"$(shell pwd)/output/arduino" -o output/arduino/uart.bin output/arduino/uart.o -ls2hell
 	avr-objcopy -O ihex -R .eeprom output/arduino/uart.bin output/arduino/uart.hex
 	sudo avrdude -F -V -c arduino -p ATMEGA328P -P /dev/ttyACM0 -b 115200 -U flash:w:output/arduino/uart.hex
