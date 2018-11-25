@@ -7,7 +7,7 @@ class TestS2HellTokenizer(unittest.TestCase):
         with open("output/s2hell.h.preprocessed") as f:
             self.ffi.cdef(f.read())
 
-        self.lib = self.ffi.dlopen("output/s2hell.so")
+        self.lib = self.ffi.dlopen("output/x86/s2hell.so")
 
     def test_jump_space(self):
         cmd = bytes("   test", "utf8")

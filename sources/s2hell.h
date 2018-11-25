@@ -49,6 +49,7 @@ s2hell_command;
 #include "s2hell_std.h"
 #include "s2hell_tokenizer.h"
 #include "s2hell_commands.h"
+#include "s2hell_terminal.h"
 
 void s2hell_set_command_list(const s2hell_command * commands, uint8_t number);
 uint8_t s2hell_get_command_list_size();

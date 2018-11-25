@@ -7,7 +7,7 @@ class TestS2HellStd(unittest.TestCase):
         with open("output/s2hell.h.preprocessed") as f:
             self.ffi.cdef(f.read())
 
-        self.lib = self.ffi.dlopen("output/s2hell.so")
+        self.lib = self.ffi.dlopen("output/x86/s2hell.so")
         # mandatory to prevent side effect !
         self.lib.s2hell_reset_stds()
 
@@ -115,7 +115,7 @@ class TestS2HellStd(unittest.TestCase):
 
         self.assertEqual(self.ffi.string(stdout), b'ABC')
 
-    def test_s2hell_stdout_nwrite(self):
+    def test_s2hell_stdout_nwrite_2(self):
         self.lib.s2hell_stdout_nwrite(b'ABCD', 3)
         self.lib.s2hell_stdout_nwrite(b'DEFG', 3)
 
