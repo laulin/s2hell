@@ -10,7 +10,7 @@
 #define CSI_FINAL 5
 
 static uint8_t g_buffer_size = 0;
-static uint8_t g_buffer[S2HELL_TERMINAL_BUFFER_SIZE] = {0};
+static uint8_t g_buffer[S2HELL_TERMINAL_BUFFER_SIZE+1] = {0};
 static uint8_t g_cursor = 0;
 static uint8_t g_state = CHARACTER;
 // callbacks definition
@@ -107,6 +107,7 @@ void s2hell_backspace()
     }
 
     memcpy(&g_buffer[g_cursor-1], &g_buffer[g_cursor], g_buffer_size - g_cursor);
+    g_buffer[g_cursor] = 0;
     g_cursor--;
     g_buffer_size--;
 }
@@ -119,6 +120,7 @@ void s2hell_delete()
     }
 
     memcpy(&g_buffer[g_cursor], &g_buffer[g_cursor+1], g_buffer_size - g_cursor);
+    g_buffer[g_cursor] = 0;
     g_cursor--;
     g_buffer_size--;
 }
