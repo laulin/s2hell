@@ -1,9 +1,33 @@
 #include "s2hell.h"
+#include <stdio.h>
+#include <avr/io.h>
 
-#define S2HELL_DEFAULT_NUMBER_OF_COMMAND (4)
+#define S2HELL_DEFAULT_NUMBER_OF_COMMAND (5)
 
 #define Not_man "not availble\n"
 
+s2hell_code default_getdp(uint8_t argc, s2hell_argument* argv)
+{
+    char tmp[15] = {0};
+
+    for(uint8_t i=0; i<8; i++)
+    {
+        uint8_t masked = DDRD & (1<<i) != 0;
+        snprintf(tmp, 15, "D%d:%d\0", i, masked);
+        s2hell_stdout_write(tmp);
+        s2hell_stdout_write("\n\r");
+    }
+
+    for(uint8_t i=0; (i+8) < 14; i++)
+    {
+        uint8_t masked = DDRB & (1<<i) != 0;
+        snprintf(tmp, 15, "D%d:%d\0", i+8, masked);
+        s2hell_stdout_write(tmp);
+        s2hell_stdout_write("\n\r");
+    }
+
+    return S2HELL_EXITCODE_SUCCESS;
+}
 
 static const s2hell_command S2HELL_DEFAULT_COMMANDS[S2HELL_DEFAULT_NUMBER_OF_COMMAND] = {
     {
@@ -28,6 +52,12 @@ static const s2hell_command S2HELL_DEFAULT_COMMANDS[S2HELL_DEFAULT_NUMBER_OF_COM
         .name = "echo",
         .name_size = 4,
         .function = default_echo,
+        .man = Not_man
+    },
+    {
+        .name = "getdp",
+        .name_size = 5,
+        .function = default_getdp,
         .man = Not_man
     }
 };
