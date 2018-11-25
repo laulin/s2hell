@@ -5,10 +5,10 @@
 s2hell_code default_lscmd(uint8_t argc, s2hell_argument* argv)
 {
     uint8_t number_of_available_commands = s2hell_get_command_list_size();
-    for(uint8_t i; i < number_of_available_commands; i++)
+    for(uint8_t i=0; i < number_of_available_commands; i++)
     {
         s2hell_stdout_write(s2hell_get_command_name(i));
-        s2hell_stdout_write("\n");
+        s2hell_stdout_write("\n\r");
     }
     return S2HELL_EXITCODE_SUCCESS;
 }
@@ -17,12 +17,11 @@ s2hell_code default_man(uint8_t argc, s2hell_argument* argv)
 {
     if (argc != 1)
     {
-        s2hell_stdout_write("need a command as argument\n");
         return S2HELL_EXITCODE_BAD_NUMBER_OF_ARGS;
     }
 
     uint8_t number_of_available_commands = s2hell_get_command_list_size();
-    for(uint8_t i; i < number_of_available_commands; i++)
+    for(uint8_t i=0; i < number_of_available_commands; i++)
     {
         if(s2hell_get_command_name_size(i) == argv->len)
         {
@@ -34,7 +33,7 @@ s2hell_code default_man(uint8_t argc, s2hell_argument* argv)
         }
     }
 
-    s2hell_stdout_write("Not man found for this command\n");
+    s2hell_stdout_write("Not man found for this command\n\r");
     return S2HELL_EXITCODE_SUCCESS;
 }
 
@@ -42,7 +41,7 @@ s2hell_code default_search(uint8_t argc, s2hell_argument* argv)
 {
     if (argc != 1)
     {
-        s2hell_stdout_write("need one arg\n");
+        s2hell_stdout_write("only one arg is needed\n\r");
         return S2HELL_EXITCODE_BAD_NUMBER_OF_ARGS;
     }
 
@@ -59,7 +58,7 @@ s2hell_code default_search(uint8_t argc, s2hell_argument* argv)
             if(found)
             {
                 s2hell_stdout_nwrite(&stdin_buffer[line_begining_position], i - line_begining_position);
-                s2hell_stdout_write("\n");
+                s2hell_stdout_write("\n\r");
                 found = 0;
             }
             line_begining_position = i+1;
@@ -89,12 +88,12 @@ s2hell_code default_echo(uint8_t argc, s2hell_argument* argv)
 {
     if (argc != 1)
     {
-        s2hell_stdout_write("need one arg\n");
+        s2hell_stdout_write("only one arg is needed\n\r");
         return S2HELL_EXITCODE_BAD_NUMBER_OF_ARGS;
     }
 
     s2hell_stdout_nwrite(argv->arg, argv->len);
-    s2hell_stdout_write("\n");
+    s2hell_stdout_write("\n\r");
 
     return S2HELL_EXITCODE_SUCCESS;
 }
