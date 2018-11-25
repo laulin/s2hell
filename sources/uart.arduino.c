@@ -24,13 +24,6 @@ void USART_Init( unsigned int ubrr)
 #define m_UART_wait_transmitted() {while(!m_UART_transmitted()) {}}
 
 
-#define BUFFER_SIZE 80
-unsigned char g_buffer_size = 0;
-char g_buffer[BUFFER_SIZE] = {0};
-unsigned char g_state = 0;
-unsigned char g_cursor = 0;
-
-
 void print_buffer(const unsigned char* buffer, unsigned char size)
 {
     unsigned char i=0;
@@ -40,6 +33,13 @@ void print_buffer(const unsigned char* buffer, unsigned char size)
         m_UART_wait_transmitted();
         m_UART_write(buffer[i]);
     }
+}
+
+void on_new_line(const unsigned char* buffer, unsigned char size)
+{
+    print_buffer("->", 3);
+    print_buffer(buffer, size);
+    print_buffer("\n\r", 2);
 }
 
 void print_char(unsigned char c)
@@ -54,6 +54,10 @@ int main (void)
     USART_Init(UBRR_VALUE);
 
     uint8_t received_value = 0xAA;
+
+    set_print_buffer(print_buffer);
+    set_on_new_line(on_new_line);
+    set_print_char(print_char);
     
     while(1) {
 

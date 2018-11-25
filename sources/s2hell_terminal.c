@@ -167,10 +167,16 @@ void on_character(uint8_t x)
                 }*/
             case 13: // return
                 {
+                    // rewrite the complet line
                     call_print_char('\r');
                     call_print_buffer((const char *)g_buffer, g_buffer_size);
-                    call_print_buffer("\n\r", 2);
+                    
+                    // go to the next line
+                    call_print_buffer("\r\n", 2);
+
+                    // run
                     call_on_new_line((const char*)g_buffer, g_buffer_size);
+                    s2hell_clear_line();
                     break;
                 }
             case 27: // escape
@@ -187,6 +193,7 @@ void on_character(uint8_t x)
     {
         // ascii
         s2hell_add_character(x);
+        call_print_char(x);
     }
     else
     {
